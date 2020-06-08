@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="test">
+    <test name="login">
+        <classes>
+            <class name="testNG.loginDemo"/>
+            <class name="httpClientDemo.getAndSetCookie"/>
+        </classes>
+    </test>
+
+    <listeners>
+        <listener class-name="testNG.MyExtentReporterListener"/>
+    </listeners>
+
+</suite>
