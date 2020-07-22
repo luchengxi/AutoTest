@@ -25,8 +25,8 @@ public class DruidConfig {
     //配置druid的监控
     //配置一个监控的servlet
     @Bean
-    public ServletRegistrationBean staViewServlet(){
-        ServletRegistrationBean bean= new ServletRegistrationBean(new StatViewServlet(),"/druid/*");
+    public ServletRegistrationBean<StatViewServlet> staViewServlet(){
+        ServletRegistrationBean<StatViewServlet> bean= new ServletRegistrationBean<>(new StatViewServlet(),"/druid/*");
         Map<String,String> initParm = new HashMap<>();
         initParm.put("loginUsername","admin");
         initParm.put("loginPassword","123");
@@ -37,8 +37,8 @@ public class DruidConfig {
     }
     //配置一个web监控的filter
     @Bean
-    public FilterRegistrationBean webStatFilter(){
-        FilterRegistrationBean bean = new FilterRegistrationBean();
+    public FilterRegistrationBean<WebStatFilter> webStatFilter(){
+        FilterRegistrationBean<WebStatFilter> bean = new FilterRegistrationBean<WebStatFilter>();
         bean.setFilter(new WebStatFilter());
         Map<String,String> initParm = new HashMap<>();
         initParm.put("exclusions","*.js,*.css,/druid/*");
