@@ -8,7 +8,7 @@
         select count(*) from user where userName=#{userName} and password=#{password}
     </select>
     <!--插入用户信息-->
-    <insert id="addusermessage" parameterType="com.course.model.User">
+    <insert id="addusermessage" parameterType="com.course.model.User" useGeneratedKeys="true" keyProperty="id">
         insert into user(userName, password, age, sex, permission, isDelete) values (#{userName},#{password},#{age},#{sex},#{permission},#{isDelete})
     </insert>
     <!--查询用户信息-->

@@ -7,10 +7,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,7 +27,9 @@ public class UserManager {
 
     @ApiOperation(value = "登录接口", httpMethod = "POST")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public boolean login(HttpServletResponse response, @RequestBody User user) {
+    public Boolean login(HttpServletResponse response, @RequestBody User user) {
+        System.out.println(user);
+        System.out.println("调用登录接口");
         int i = template.selectOne("login", user);
         Cookie cookie = new Cookie("login", "true");
         response.addCookie(cookie);
@@ -41,8 +41,38 @@ public class UserManager {
         return false;
     }
 
+
+    @ApiOperation(value = "获取cookie信息",httpMethod = "GET")
+    @RequestMapping(value = "/getcookie",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
+    public Boolean getCookies(HttpServletResponse response, HttpServletRequest request, @RequestParam(name="name") String name){
+        if(name.equals("张三")){
+            Cookie cookie = new Cookie("cookie", "true");
+            response.addCookie(cookie);
+            return true;
+        }
+        return false;
+    }
+
+    @ApiOperation(value = "验证cookie",httpMethod = "GET")
+    @RequestMapping(value = "/checkcookie",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
+    public Boolean checkCookie(HttpServletRequest request,HttpServletResponse response){
+        Cookie[] cookies = request.getCookies();
+        if (Objects.isNull(cookies)) {
+            log.info("cookies信息为空,验证不成功");
+        }
+        //遍历cookies信息
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("cookie") && cookie.getValue().equals("true")) {
+                log.info("cookie信息验证成功");
+                    return true;
+                }
+            }
+
+        return false;
+    }
+
     @ApiOperation(value = "添加用户信息接口", httpMethod = "POST")
-    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/addUser", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
     public User addUserMessage(HttpServletRequest request,@RequestBody User user) {
         Cookie[] cookies = request.getCookies();
         if (Objects.isNull(cookies)) {
